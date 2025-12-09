@@ -1,0 +1,5 @@
+MQTT details
+Hostname	seal.lmq.cloudamqp.com
+Ports	1883 (8883 for TLS)
+Username	flsczskt:flsczskt
+Password	83Qz4pie-yOxEFliDmqos4b9hHFcpBva

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 Controller
+  p Điều khiển Matrix LED
+
+  form#sendForm
+    input(type="text" id="msgInput" placeholder="Nhập nội dung...")
+    button(type="submit") Gửi tới thiết bị
+
+  br
+  button#btnAuto Chế độ AUTO
+  button#btnManual Chế độ MANUAL

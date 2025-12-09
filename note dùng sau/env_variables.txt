@@ -1,0 +1,12 @@
+ENV		Ý nghĩa
+
+PORT		Cổng chạy server, Render tự cấp
+MONGODB_URI	URI của MongoDB Atlas
+MQTT_URL	mqtt://username:password@hostname:1883
+MQTT_USERNAME	Nếu bạn muốn tách riêng
+MQTT_PASSWORD	Password MQTT
+JWT_SECRET	Tùy chọn nếu bạn có auth
+DEVICE_ID	nếu backend quản lý nhiều thiết bị thì không cần
+
+
+NEXT_PUBLIC_API_URL	URL backend

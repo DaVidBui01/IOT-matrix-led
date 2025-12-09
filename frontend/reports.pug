@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 Reports
+  p Xem dữ liệu từ MongoDB
+
+  form#filterForm
+    input(type="date" id="startDate")
+    input(type="date" id="endDate")
+    button(type="submit") Lọc
+
+  #resultList
+    p Chưa có dữ liệu

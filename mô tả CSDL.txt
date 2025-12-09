@@ -1,0 +1,150 @@
+MongoDB Database Specification — matrixled
+1. Tổng quan
+
+Cơ sở dữ liệu MongoDB được thiết kế để lưu trữ thông tin thiết bị, trạng thái cảm biến, 
+lịch sử hiển thị và dữ liệu phục vụ quản trị hệ thống LED ma trận 8x32 sử dụng ESP32 + MQTT.
+
+Các đối tượng chính cần lưu trữ:
+
+Thiết bị LED
+
+Người dùng (tùy chọn)
+
+Lịch sử hiển thị
+
+Dữ liệu cảm biến (telemetry)
+
+Lệnh đã gửi đến thiết bị
+
+Cấu trúc được giữ tối giản để phù hợp với bài tập lớn nhưng vẫn đúng chuẩn một hệ thống IoT thực tế.
+
+📌 2. Collections chi tiết
+2.1. devices (QUAN TRỌNG NHẤT)
+
+Lưu thông tin mỗi thiết bị LED trong hệ thống
+
+Mục đích
+
+Xác định mỗi thiết bị trong hệ thống thông qua deviceId
+
+Lưu metadata về thiết bị (vị trí, kiểu model, trạng thái hoạt động)
+
+Lưu thông tin kết nối MQTT
+
+Lưu trạng thái cuối cùng của cảm biến để backend có thể hiển thị nhanh mà không cần chờ MQTT
+
+Cấu trúc
+{
+  "_id": "ObjectId",
+  "deviceId": "matrix-001",
+  "name": "LED Panel 001",
+  "location": "Phòng 204",
+  "description": "Bảng LED đặt tại phòng học 204, hiển thị thông điệp và cảm biến DHT22",
+
+  "status": {
+    "online": true,
+    "lastSeen": "2025-01-20T14:22:35.000Z",
+    "firmware": "v1.0.3"
+  },
+
+  "mqtt": {
+    "telemetryTopic": "matrixled/matrix-001/telemetry",
+    "controlTopic": "matrixled/matrix-001/control"
+  },
+
+  "sensors": {
+    "temperature": 28.2,
+    "humidity": 71,
+    "updatedAt": "2025-01-20T14:21:12.000Z"
+  },
+
+  "lastMessage": {
+    "content": "Hello IoT!",
+    "updatedAt": "2025-01-20T13:12:44.000Z"
+  },
+
+  "createdAt": "2025-01-18T10:00:00.000Z",
+  "updatedAt": "2025-01-20T14:22:35.000Z"
+}
+
+Giải thích các trường quan trọng
+Trường			Ý nghĩa
+deviceId		ID ESP32 do bạn tự đặt, dùng để định danh trong MQTT
+status.online		true = đang gửi heartbeat / còn hoạt động
+status.lastSeen		cập nhật mỗi lần ESP32 gửi MQTT
+mqtt.telemetryTopic	ESP32 gửi lên backend
+mqtt.controlTopic	backend gửi lệnh xuống ESP32
+sensors.*		lưu trạng thái cảm biến mới nhất
+lastMessage.content	nội dung chữ đã hiển thị gần nhất
+
+2.2. telemetry (tuỳ chọn nếu muốn có log chi tiết)
+
+Lưu từng gói dữ liệu cảm biến gửi lên từ ESP32
+
+Cấu trúc
+{
+  "_id": "ObjectId",
+  "deviceId": "matrix-001",
+  "temperature": 28.2,
+  "humidity": 71,
+  "timestamp": "2025-01-20T14:22:35.000Z"
+}
+
+
+Dùng để vẽ biểu đồ trong dashboard hoặc phân tích.
+
+2.3. messages
+
+Lưu lịch sử các thông điệp đã gửi xuống LED
+
+Cấu trúc
+{
+  "_id": "ObjectId",
+  "deviceId": "matrix-001",
+  "content": "Welcome to IoT Class!",
+  "createdAt": "2025-01-20T12:00:00.000Z",
+  "sentBy": "admin"   // optional
+}
+
+2.4. commands (optional)
+
+Backend có thể lưu lại lệnh đã gửi qua MQTT
+
+{
+  "_id": "ObjectId",
+  "deviceId": "matrix-001",
+  "commandType": "SET_MESSAGE",
+  "payload": {
+    "message": "Hello World"
+  },
+  "createdAt": "2025-01-20T12:10:00.000Z"
+}
+
+2.5. users (optional)
+
+Nếu hệ thống cần đăng nhập (frontend quản trị)
+
+{
+  "_id": "ObjectId",
+  "username": "admin",
+  "passwordHash": "...",
+  "role": "admin"
+}
+
+📌 3. Sơ đồ quan hệ tổng quát
+
+1 device → nhiều telemetry
+
+1 device → nhiều messages
+
+1 device → nhiều commands
+
+users đứng độc lập nếu có dùng auth
+
+📌 4. Bảng tóm tắt
+Collection	Mục đích						Bắt buộc?
+devices		thông tin thiết bị, topic MQTT, trạng thái cảm biến	✔ Bắt buộc
+telemetry	lưu log cảm biến					Tuỳ chọn
+messages	lưu lịch sử thông điệp gửi xuống LED			Tuỳ chọn
+commands	lưu log điều khiển					Tuỳ chọn
+users		đăng nhập, phân quyền					Tuỳ chọn

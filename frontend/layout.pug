@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Matrix LED Web
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    nav
+      ul
+        li: a(href="/") Dashboard
+        li: a(href="/controller") Controller
+        li: a(href="/reports") Reports
+
+    block content
+
+    script(src="/js/dashboard.js")
+    script(src="/js/controller.js")
+    script(src="/js/reports.js")

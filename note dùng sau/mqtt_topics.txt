@@ -1,0 +1,5 @@
+matrixled/<deviceId>/telemetry   // ESP32 gửi dữ liệu cảm biến
+matrixled/<deviceId>/control     // Backend gửi lệnh điều khiển LED
+matrixled/<deviceId>/status      // ESP32 phản hồi trạng thái (optional)
+
+

@@ -1,0 +1,5 @@
+vit97642_db_user
+
+9KPGRsmwpCj3MWcM
+
+mongodb+srv://vit97642_db_user:<db_password>@matrixled.aejxsed.mongodb.net/

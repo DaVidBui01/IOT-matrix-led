@@ -1,0 +1,25 @@
+Trách nhiệm
+
+Initialize Git repo, branch strategy, CI (optional).
+
+Set up MongoDB Atlas, MQTT broker accounts and share credentials (store in secure env on Render & Vercel).
+
+Deploy backend to Render; deploy frontend to Vercel (connect repos).
+
+Configure domains (optional), HTTPS.
+
+Test end-to-end: coordinate with a/b/c to ensure full flow.
+
+Write deployment & rollback instructions, basic monitoring (Render logs, health endpoint).
+
+Prepare demo environment & Users acceptance checks.
+
+Deliverables
+
+GitHub repos linked to Vercel & Render.
+
+Environment config checklist (where variables stored).
+
+End-to-end test report (scenarios passed/failed).
+
+README on how to redeploy and troubleshoot.
